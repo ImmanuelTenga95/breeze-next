@@ -1,3 +1,4 @@
+
 import useSWR from 'swr'
 import axios from '@/lib/axios'
 import { useEffect } from 'react'
@@ -35,7 +36,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             })
     }
 
-    const login = async ({ setErrors, setStatus, ...props }) => {
+    const login = async ({ setErrors, setStatus, setIsLoading, ...props }) => {
         await csrf()
 
         setErrors([])
@@ -43,8 +44,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
         axios
             .post('/login', props)
-            .then(() => mutate())
+            .then(() => {mutate(), setIsLoading(false)})
             .catch(error => {
+                setIsLoading(false)
                 if (error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)

@@ -23,6 +23,7 @@ const Login = () => {
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (router.reset?.length > 0 && errors.length === 0) {
@@ -34,13 +35,14 @@ const Login = () => {
 
     const submitForm = async event => {
         event.preventDefault()
-
+        setIsLoading(true)
         login({
             email,
             password,
             remember: shouldRemember,
             setErrors,
             setStatus,
+            setIsLoading
         })
     }
 
@@ -113,7 +115,7 @@ const Login = () => {
                         Forgot your password?
                     </Link>
 
-                    <Button className="ml-3">Login</Button>
+                    <Button className="ml-3" disabled={isLoading}>{isLoading? 'Loading..': 'Login'}</Button>
                 </div>
             </form>
         </>

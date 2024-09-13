@@ -1,23 +1,52 @@
+'use client'
 import Header from '@/app/(app)/Header'
+import Announcements from '@/components/Announcements'
+import AttendanceChart from '@/components/AttendanceChart'
+import CountChart from '@/components/CountChart'
+import EventCalendar from '@/components/EventCalendar'
+import FinanceChart from '@/components/FinanceChart'
+import UserCard from '@/components/UserCard'
+import { useAuth } from '@/hooks/auth'
 
-export const metadata = {
+const metadata = {
     title: 'Laravel - Dashboard',
 }
 
 const Dashboard = () => {
+    const { user } = useAuth({ middleware: 'auth' })
     return (
-        <>
-            <Header title="Dashboard" />
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 bg-white border-b border-gray-200">
-                            You are logged in!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
+        <div className="p-4 flex gap-4 flex-col md:flex-row">
+      {/* LEFT */}
+      <div className="w-full lg:w-2/3 flex flex-col gap-8">
+        {/* USER CARDS */}
+        <div className="flex gap-4 justify-between flex-wrap">
+          <UserCard type="student" />
+          <UserCard type="teacher" />
+          <UserCard type="parent" />
+          <UserCard type="staff" />
+        </div>
+        {/* MIDDLE CHARTS */}
+        <div className="flex gap-4 flex-col lg:flex-row">
+          {/* COUNT CHART */}
+          <div className="w-full lg:w-1/3 h-[450px]">
+            <CountChart />
+          </div>
+          {/* ATTENDANCE CHART */}
+          <div className="w-full lg:w-2/3 h-[450px]">
+            <AttendanceChart />
+          </div>
+        </div>
+        {/* BOTTOM CHART */}
+        <div className="w-full h-[500px]">
+          <FinanceChart />
+        </div>
+      </div>
+      {/* RIGHT */}
+      <div className="w-full lg:w-1/3 flex flex-col gap-8">
+        <EventCalendar />
+        <Announcements/>
+      </div>
+    </div>
     )
 }
 
